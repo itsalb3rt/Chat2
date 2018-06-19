@@ -42,6 +42,9 @@ function getStateOfChat(){
 			   state = data.state-5;
 			   updateChat();
 		   },
+		 error:function(xhr,status,error){
+			 console.log(xhr.responseText);
+		 }
 		});
 }
 		 
@@ -71,9 +74,13 @@ function updateChat(){
         
         instanse = false;
         state = data.state;
+		//Refresca cada segundo para cargar los mensajes :(
         setTimeout('updateChat()', 1);
         
         },
+		 error:function(xhr,status,error){
+			 console.log(xhr.responseText);
+		 }
     });
 }
 
@@ -93,6 +100,9 @@ function sendChat(message, nickname) {
 		   success: function(data){
 			
 		   },
+		 error:function(xhr,status,error){
+			 console.log(xhr.responseText);
+		 }
 		});
 
 }
@@ -102,7 +112,6 @@ function trimstr(s, limit) {
 } 
 
 function getuserlist(room, username) {
-
 	roomid = room;
 	usernameid = username;
 	
@@ -131,6 +140,9 @@ function getuserlist(room, username) {
             setTimeout('getuserlist(roomid, usernameid)', 1);
            
         },
+		 error:function(xhr,status,error){
+			 console.log(xhr.responseText);
+		 }
     });
 	
 }

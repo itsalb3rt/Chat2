@@ -1,7 +1,7 @@
 <?php
 
   $function = htmlentities(strip_tags($_POST['function']), ENT_QUOTES);
-	$file = htmlentities(strip_tags($_POST['file']), ENT_QUOTES);
+  $file = htmlentities(strip_tags($_POST['file']), ENT_QUOTES);
     
   $log = array();
     
@@ -34,11 +34,7 @@
             	
             	 fwrite(fopen($file, 'a'), "<span>". $nickname . "</span>" . $message = str_replace("\n", " ", $message) . "\n"); 
     		 }
-    		 
         	 break;
-    	
     }
-    
     echo json_encode($log);
-
 ?>

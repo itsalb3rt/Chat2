@@ -3,12 +3,16 @@
     session_start();
 
     require_once("dbcon.php");
+    require_once("include/conexion/conexion.php");
 
     if (checkVar($_SESSION['userid'])): 
  
         $getRooms = "SELECT *
         			 FROM chat_rooms";
-        $roomResults = mysql_query($getRooms);		  
+
+	$resultado = $base->prepare( $getRooms );
+    $resultado->execute( array() );
+    $resultado = $resultado->fetchAll( PDO::FETCH_OBJ );		  
 
 ?>
 
@@ -20,7 +24,7 @@
     
     <title>Chat Rooms</title>
     
-    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
 </head>
 
 <body>
@@ -41,15 +45,19 @@
             	<h3>Rooms</h3>
                 <ul>
                     <?php 
-                        while($rooms = mysql_fetch_array($roomResults)):
-                            $room = $rooms['name'];
-                            $query = mysql_query("SELECT * FROM `chat_users_rooms` WHERE `room` = '$room' ") or die("Cannot find data". mysql_error());
-                            $numOfUsers = mysql_num_rows($query);
+                       foreach($resultado as $room):
+				
+                            $query = "SELECT * FROM `chat_users_rooms` WHERE `room` = '$room->name' ";
+				
+							$resultado = $base->prepare( $query );
+							$resultado->execute( array() );
+							$numOfUsers = $resultado->rowCount();
+							$resultado = null;
                     ?>
                     <li>
-                        <a href="room/?name=<?php echo $rooms['name']?>"><?php echo $rooms['name'] . "<span>Users chatting: <strong>" . $numOfUsers . "</strong></span>" ?></a>
+                        <a href="room/?name=<?php echo $room->name?>"><?php echo $room->name . "<span>Users chatting: <strong>" . $numOfUsers . "</strong></span>" ?></a>
                     </li>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>

@@ -1,11 +1,8 @@
 <?php
-//Connection Page
-define(HOST, 'localhost');
-define(USERNAME, 'db_user');
-define(PASSWORD, 'db_password');
-
-   mysql_connect( HOST, USERNAME, PASSWORD) or die("Could not connect");
-   mysql_select_db ("chat2_db")or die('Cannot connect to the database because: ' . mysql_error());
+/**
+* conexion db
+**/
+include('include/conexion/conexion.php');
 
 //functions
 function checkVar($var)
@@ -21,33 +18,32 @@ function checkVar($var)
 		return false;	
 	}
 }
-function hasData($query)
-{	$rows = mysql_query($query)or die("somthing is wrong");
-	$results = mysql_num_rows($rows);
-	if($results == 0)
-	{
+/**
+* Verificando que la consulta tenga datos
+* @query [consulta y parametros]
+* @conexion [PDO Object]
+**/
+function hasData($query,$conexion){
+	$resultado = $conexion->prepare( $query );
+    $resultado->execute( array() );
+    $total_registros = $resultado->rowCount();
+    $resultado = $resultado->fetchAll( PDO::FETCH_OBJ );
+	$resultado = null;
+	
+	if($total_registros == 0)
 		return false;  
-	}
 	else
-	{
-		return true;  
-	}
+		return true;
 }
-function isAjax()
-	{
-		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' )
-		{
+function isAjax(){
+		if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){
 	     	return true; 
-		}	
-		else
-		{
+		}else{
 			return false;
 		}
-		
 	}
 
-function cleanInput($data)
-	{
+function cleanInput($data){
 		// http://svn.bitflux.ch/repos/public/popoon/trunk/classes/externalinput.php
 		// +----------------------------------------------------------------------+
 		// | Copyright (c) 2001-2006 Bitflux GmbH                                 |
@@ -100,13 +96,11 @@ function cleanInput($data)
 		// Remove namespaced elements (we do not need them)
 		$data = preg_replace('#</*\w+:\w[^>]*+>#i', '', $data);
 
-		do
-		{
+		do{
 			// Remove really unwanted tags
 			$old_data = $data;
 			$data = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $data);
-		}
-		while ($old_data !== $data);
+		}while ($old_data !== $data);
 
 		return $data;
 	}

@@ -1,3 +1,22 @@
+------
+2018-06 Albert E Hidalgo Taveras Update
+------
+
+Spanish (Use google)
+
+- Se reemplazo mysql por PDO
+- Metodos optimizados y mejoras internas
+
+- Chats
+Para crear un chat solo debe agregar manualmente en la base de datos el la tabla 'chat_rooms' los que desee
+
+Ej:
+
+INSERT INTO `chat_rooms` (`id`, `name`, `numofuser`, `file`) VALUES (NULL, 'test', '10', 'test.txt');
+
+
+
+
 -----------
 Add Whispering in Chat v2, by Christian Mehler
 --------------

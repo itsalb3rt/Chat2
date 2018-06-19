@@ -3,6 +3,7 @@
     session_start();
 
     require_once("../Chat2/dbcon.php");
+    require_once("include/conexion/conexion.php");
 
     if (isAjax()) {
     
@@ -15,7 +16,7 @@
     					 FROM chat_users
     					 WHERE username = '$username'";
     					 
-    		if (!hasData($getUsers)) {
+    		if (!hasData($getUsers,$base)) {
     		  $data['result'] = "<div class='message success'>Great! You found a username not in use</div>";
     		  $data['inuse'] = "notinuse";
     		} else {
@@ -37,7 +38,7 @@
     					 FROM chat_users
     					 WHERE username = '$username'";
     		
-    		if (!hasData($getUsers)) {
+    		if (!hasData($getUsers,$base)) {
     		
     			$now = time();
     		
@@ -50,8 +51,9 @@
     					VALUES (
     					NULL , '$username', '1', '$now'
     					)";
-    					
-    		    mysql_query($postUsers);
+				
+				$resultado = $base->prepare( $postUsers );
+				$resultado->execute( array() );
     		    			
     			$_SESSION['userid'] = $username;
     		

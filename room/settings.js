@@ -1,5 +1,4 @@
 $(function() {
-    		 
     $("#sendie").keydown(function(event) {  
     
         var key = event.which;  
@@ -13,8 +12,8 @@ $(function() {
              if (length >= maxLength) {  
                  event.preventDefault();  
              }  
-         }  
-																																																			});
+         }
+	});
 			 
         $('#sendie').keyup(function(e) {	
         					 
@@ -34,5 +33,4 @@ $(function() {
             }
             
         });
-            
 });
