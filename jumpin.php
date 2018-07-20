@@ -2,7 +2,7 @@
 
     session_start();
 
-    require_once("../Chat2/dbcon.php");
+    require_once("dbcon.php");
     require_once("include/conexion/conexion.php");
 
     if (isAjax()) {
